@@ -6,7 +6,7 @@
 # 网站
 pdb2mol2: <http://pdb2mol2.chenzhaoqiang.com/>
 
-![web图片]（./img/webFinished.png）
+![web图片](./img/webFinished.png)
 
 
 
