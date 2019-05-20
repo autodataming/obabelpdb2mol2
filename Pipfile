@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask-script = "*"
+celery = "*"
+rq = "*"
+eventlet = "*"
+redis = "*"
+flask = "*"
+tqdm = "*"
+
+[requires]
+python_version = "2.7"

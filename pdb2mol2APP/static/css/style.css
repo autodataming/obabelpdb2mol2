@@ -1,0 +1,183 @@
+body {
+    /* background: rgb(243, 244, 245); */
+    background-image: linear-gradient(#E0EEF3,#FAFCFD) !important;
+    height: 100%;
+    color: rgb(100, 108, 127);
+    line-height: 1.4rem;
+    font-family: Roboto, "Open Sans", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+}
+
+#previewpos
+{
+    margin-right: auto;
+    margin-left:auto;
+    border-color:blue;
+    border-style: dashed;
+    min-width: 40rem;
+    max-width: 60rem;
+    background-color: white;
+    margin-bottom: 40px;
+}
+
+#previewpos > section ul li{
+display: block;
+margin: .4rem;
+padding: 0 1.28rem;
+background: #f0f0f0;
+border: .1rem solid #cfdbde;
+border-radius: .2rem;
+font-weight: bold;
+line-height: 2.8rem;
+color: #363a43;
+}
+
+.dz-filename{
+    float: left;
+    width: 33.33%;
+    
+
+}
+.dz-size{
+   color: green;
+   font-size: 1.3rem;
+   float:left;
+   width:10%;
+}
+
+/* line-height: 2.8rem; */
+/* margin-top:calc(2.8-2)/2rem;   */
+.dz-progress
+{
+    width:30%;
+    height:2rem;
+    border-color: #363a43;
+    border-style: dashed;
+    float:left;
+    margin-top:0.4rem;  
+    
+
+
+}
+.dz-upload { 
+    display: block; 
+    background-color: red; 
+    height: 25px;
+    width: 0%;
+    border-radius: 15px;
+    text-align: center;
+    line-height:100%;
+}
+
+
+.dz-convert{ 
+    display: block; 
+ 
+    height: 25px;
+
+    border-radius: 15px;
+    text-align: center;
+    line-height:100%;
+    width:200px;
+  /*   background-color: #3ee283; */
+    background:-moz-repeating-linear-gradient(-30deg, #38ca75 0px, #38ca75 10px, #3bd67c 10px,#3bd67c 20px); 
+    -webkit-animation: move 5s linear infinite;
+    
+  }
+
+.dz-finished{ 
+    display: block; 
+ 
+    height: 25px;
+
+    border-radius: 15px;
+    text-align: center;
+    line-height:100%;
+    width:200px;
+   background-color: #8CE313;
+
+    
+  }
+
+
+@-webkit-keyframes move{ 
+    0%{ background-position: 0 0; } 
+    100%{ background-position: 200px 0; }
+}
+  
+
+
+
+/* The total progress gets shown by event listeners */
+#total-progress {
+opacity: 0;
+transition: opacity 0.3s linear;
+}
+
+
+.downloadpdb{
+    text-align: right;
+}
+#dropzoneczq{
+    margin-top: 20px;
+    border-color: red;
+    border-style: dashed;
+    background-image: url('/static/img/underwat.jpg');
+    background-repeat: no-repeat;
+    /* position: center; */
+    position: relative;
+    /* background-position: center; */
+    background-size: 100%;
+    display:block;
+}
+
+
+
+#demo-upload{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-color: red;
+    border-style: dashed;
+    background: transparent;
+    border-radius: 5px;
+    border: 2px dashed rgb(0, 135, 247);
+    border-image: none;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+h1 { text-align: center; }
+
+
+
+
+#downbutton
+{
+    
+
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom:2rem;
+        padding: .5000000000000003rem 1.12rem;
+        height: 2.5 rem;
+        border-radius: .2rem;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: .1rem .1rem 0 rgba(150,150,150,0.6);
+        display:none; 
+        /* block, */
+        background-color: #02c487;
+        border-bottom-color: #029c6b;
+  
+
+}
+
+
+
+
+

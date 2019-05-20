@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge"
+        http-equiv="X-UA-Compatible">
+  <meta content="*"
+        http-equiv="Access-Control-Allow-Origin">
+  <link href="/static/img/favicon.ico"
+        rel="shortcut icon"
+        type="image/x-icon">
+  <link href="/static/css/style.css"
+        rel="stylesheet">
+  <link crossorigin="anonymous"
+        href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+        rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css"
+        rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script crossorigin="anonymous"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <link href="/static/css/dropzone.css"
+        rel="stylesheet">
+  <script src="/static/js/dropzone.js"></script>
+  <title>PDB2MOL2-OPENBABEL</title>
+</head>
+<body>
+  <header>
+    <h1>PDB2MOL2--Convert PDB format to mol2</h1>
+  </header>
+  <section>
+    <div id="dropzoneczq">
+      <form action='/handleupload'
+            class="dropzone needsclick"
+            id="demo-upload"
+            name="demo-upload">
+        <div class="dz-message needsclick">
+          <p><b>Drop your pdb files here or click to upload!</b></p>
+          <p><span class="note needsclick"><small>Up to 20 pdb files, max 2 MB each.</small></span></p>
+        </div>
+      </form>
+      <div id="previewpos"></div>
+      <div>
+         <button id="downbutton" ><i class="fa fa-cloud-download" aria-hidden="true"></i>Download all</button>
+      </div>
+    </div>
+  </section>
+  <div class="row">
+    <div class="col-md-4">
+      <h4>What does PDB2MOL2 do?</h4>
+      <p>PDB2MOL convert pdb format to mol2 format based on the openbabel.</p>
+    </div>
+    <div class="col-md-4">
+      <h4>Why should I use pdb2mol2?</h4>
+      <p>On this page we have setup a webservice allowing you to use OpenBabel without having to install it.</p>
+    </div>
+    <div class="col-md-4">
+      <h4>OpenBabel</h4>
+      <p>OpenBabel allows to convert nearly all the chemical formats and it very practical to quickly move from one program to another.</p>
+    </div>
+  </div>
+  <footer>
+    copyright @ autolife space
+  </footer>
+  <div class="dz-preview dz-file-preview"
+       id='uploadfiles'
+       style="display:none">
+    <section>
+    <ul >
+        <li>
+            <div class="dz-details">
+                <div class="dz-filename"><span data-dz-name></span></div>  
+                <div class="dz-size"    data-dz-size=""></div>
+                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                <div class="dz-error-message"></div>
+                 <div class="downloadpdb"  ><a href="#">download</a></div>
+            </div>
+        </li>
+    </ul>
+
+
+    </section>   
+  </div>
+
+
+  <script>
+
+        Dropzone.autoDiscover = false;
+        $(document).ready(function($)
+        {
+
+        var myDropzone = new Dropzone("#demo-upload", {
+              url: '/handleupload',
+        maxFiles: 10,
+        maxFilesize: 5000,
+        acceptedFiles: ".pdb",
+        init: function() 
+             {
+
+                this.on("success", function(file)
+                 {
+                     console.log("File " + file.name + "uploaded");
+                  }); 
+       
+            
+              },
+     
+        previewsContainer: '#previewpos',
+        previewTemplate : document.querySelector('#uploadfiles').innerHTML,
+
+        
+        });
+
+
+
+        // 监听上传 
+        myDropzone.on('uploadprogress',function(file,progress,bytesSent){
+
+          // 应该选择 id="previewpos" 下的child 最后一个元素中的 dz-upload
+         // alert("what in the file?");
+          console.log(file);
+          var last=file.previewTemplate.querySelector(".dz-upload");
+          last.textContent ="uploading";
+          last.style.width = progress + "%";
+      
+          
+
+        });
+        // 上传成功
+        myDropzone.on('success',function(file,response){
+
+          
+       
+          var last=file.previewTemplate.querySelector(".dz-upload");
+          
+          last.style.width = 100 + "%";
+          last.className = 'dz-convert';
+          last.textContent ="converting";
+          last.id =Date.now().toString(36);
+
+         
+         // alert("check last");
+          console.log(last);
+
+         // <!-- $.ajax({ url:'/longtask',type:'GET'}) -->
+          $.ajax({ url:'/longtask?pdbfile='+file.name+'&id='+last.id,type:'GET',
+          success:function(result)
+              {
+                //成功提交到后台计算
+               // alert("test start long task"+file.name);
+                //console.log("result:"+result);
+                // 每隔 10秒 查询一次状态，如果成功停止查询
+                //  $.ajax({  url: 'http://127.0.0.1:5000/status/85c81f28-fcc1-493f-a129-1f94c1f6e32a'}) 
+                 var refreshId=window.setInterval(function () {
+                  $.ajax({
+                       url: '/status/' + result.taskid+'?id='+result.id,  //
+                       type: 'GET',
+                       dataType: 'json',
+                       success: function (res) {
+                       //  <!-- alert(res); -->
+                       // <!-- clearInterval(refreshId); -->
+                       // alert(res.status+"test"+res.downlink);
+                        //文件在后台 转换成功
+                           if (res.status+'' == 'SUCCESS') {
+
+                              // 不应该通过class 来定位元素，通过 id 来定位
+                             // alert(window.location.href+"download/"+res.downlink);
+                             // alert("check res");
+                              console.log(res);
+                              var last =document.querySelector('#'+res.id);
+                           
+                              console.log(last);
+                              //alert("check last");
+                              //var last=file.previewTemplate.querySelector(".dz-convert");
+                              last.className = 'dz-finished';
+                              last.textContent ="Finished";
+                              last.parentNode.parentNode.parentNode.querySelector(".downloadpdb>a").textContent=res.downlink;
+                              last.parentNode.parentNode.parentNode.querySelector(".downloadpdb>a").href=window.location.href+"download/"+res.downlink;
+                             // var el =document.querySelector(".downloadpdb")
+                               //window.location.href+"download/"+res.mol2file
+                               //document.querySelector("#downbutton").style.display="block"; 
+
+
+                               clearInterval(refreshId);
+
+                           } 
+                           else if(res+'' == 'PENDING' )
+                           {
+                             console.log('converting');
+                           }
+                       }
+                   })
+                   }, 1000);
+            
+              },
+              error:function(){console.log("error")} , 
+              });
+
+        });
+
+
+
+        var refreshId2=window.setInterval(function () {
+          numsection=$('section.dz-processing').length;
+          numfinished=$('.dz-finished').length;
+          if (numsection==numfinished & numfinished>0)
+          {
+            document.querySelector("#downbutton").style.display="block"; 
+
+          }
+        },2000);       
+   
+
+        $("#downbutton").click(function () {
+          // 
+          var nodes = document.querySelectorAll(".dz-finished");
+          var molfiles = new Array();
+          for (let node of nodes) {
+              molfile = node.parentNode.parentNode.querySelector('.downloadpdb').textContent;
+              molfiles.push(molfile)
+          }
+      
+          parastr = molfiles.join('&molfile=')
+      
+          $.ajax({
+              url: '/zip' + '?molfile=' + parastr, //
+              type: 'GET',
+              dataType: 'json',
+              success: function (res) {
+                window.open(window.location.href+'downloadall/' + res.zipfile);
+              }
+      
+      
+          });
+      }
+      );   
+
+        }) 
+
+//后台转换完成 自动 出现download all 按钮 
+
+
+
+
+  </script>
+
+
+  
+</body>
+</html>
+
+
