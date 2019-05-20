@@ -13,6 +13,7 @@ pdb2mol2: <http://pdb2mol2.chenzhaoqiang.com/>
 # 环境
 系统： win/linux
 语言： python2/python3
+依赖： flask celery dropzoneJS  
 后台程序：
 1. 7-zip;命令名字统一为7z;
 2. openbabel;后台命令名字统一为obabel.
