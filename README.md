@@ -6,6 +6,8 @@
 # 网站
 pdb2mol2: <http://pdb2mol2.chenzhaoqiang.com/>
 
+![web图片]（./img/webFinished.png）
+
 
 
 # 环境
